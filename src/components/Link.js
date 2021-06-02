@@ -1,4 +1,4 @@
-import { AUTH_TOKEN, LINKS_PER_PAGE } from "../constants";
+import { AUTH_TOKEN } from "../constants";
 import { gql, useMutation } from "@apollo/client";
 import { FEED_QUERY } from "./LinkList";
 
@@ -31,9 +31,6 @@ const Link = ({ link, index }) => {
       cache.writeQuery({ query: FEED_QUERY, data: { feed: updatedLinks } });
     },
   });
-
-  const take = LINKS_PER_PAGE;
-  const skip = 0;
 
   return (
     <div className="flex mt2 items-start">
