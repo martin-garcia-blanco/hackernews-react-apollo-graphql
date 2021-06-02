@@ -4,6 +4,7 @@ import Header from "./Header";
 import LinkList from "./LinkList";
 import { Switch, Route } from "react-router-dom";
 import Login from "./Login";
+import Search from "./Search";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route exact path="/" component={LinkList} />
           <Route exact path="/create" component={CreateLink} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/search" component={Search} />
         </Switch>
       </div>
     </div>
