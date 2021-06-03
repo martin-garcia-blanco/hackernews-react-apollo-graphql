@@ -6,14 +6,17 @@ import Link from "./Link";
 const FEED_SEARCH_QUERY = gql`
   query FeedSearchQuery($filter: String!) {
     feed(filter: $filter) {
-      id
-      url
-      description
-      postedBy {
-        name
-      }
-      votes {
+      count
+      links {
         id
+        url
+        description
+        postedBy {
+          name
+        }
+        votes {
+          id
+        }
       }
     }
   }
@@ -38,7 +41,7 @@ const Search = () => {
         </button>
       </div>
       {data &&
-        data.feed.map((link, index) => (
+        data.feed.links.map((link, index) => (
           <Link key={link.id} link={link} index={index} />
         ))}
     </>

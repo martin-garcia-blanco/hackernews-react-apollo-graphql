@@ -19,7 +19,6 @@ const CreateLink = () => {
     description: "",
     url: "",
   });
-  console.log("feedQuery", FEED_QUERY);
   const [createLink] = useMutation(CREATE_LINK_MUTATION, {
     variables: { description: formState.description, url: formState.url },
     update: (cache, { data: { post } }) => {

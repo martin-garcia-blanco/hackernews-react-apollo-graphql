@@ -12,14 +12,22 @@ const VOTE_MUTATION = gql`
     }
   }
 `;
+const take = 10;
+const skip = 0;
 
 const Link = ({ link, index }) => {
   const authToken = localStorage.getItem(AUTH_TOKEN);
   const [vote] = useMutation(VOTE_MUTATION, {
     variables: { linkId: link.id },
     update(cache, { data: { vote } }) {
-      const { feed } = cache.readQuery({ query: FEED_QUERY });
-      const updatedLinks = feed.map((feedLink) => {
+      const { feed } = cache.readQuery({
+        query: FEED_QUERY,
+        variables: {
+          take,
+          skip,
+        },
+      });
+      const updatedLinks = feed.links.map((feedLink) => {
         if (feedLink.id === link.id) {
           return {
             ...feedLink,
@@ -28,7 +36,14 @@ const Link = ({ link, index }) => {
         }
         return feedLink;
       });
-      cache.writeQuery({ query: FEED_QUERY, data: { feed: updatedLinks } });
+      cache.writeQuery({
+        query: FEED_QUERY,
+        data: { feed: { links: updatedLinks } },
+        variables: {
+          take,
+          skip,
+        },
+      });
     },
   });
 
