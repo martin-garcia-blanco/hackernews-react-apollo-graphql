@@ -17,8 +17,33 @@ export const FEED_QUERY = gql`
   }
 `;
 
+const NEW_LINK_SUBSCRIPTIONS = gql`
+  subscription {
+    newLink {
+      id
+      url
+      description
+      votes {
+        id
+      }
+    }
+  }
+`;
+
 const LinkList = () => {
-  const { data, loading, error } = useQuery(FEED_QUERY);
+  const { data, loading, error, subscribeToMore } = useQuery(FEED_QUERY);
+
+  subscribeToMore({
+    document: NEW_LINK_SUBSCRIPTIONS,
+    updateQuery: (prev, { subscriptionData }) => {
+      if (!subscriptionData.data) return prev;
+      const newLink = subscriptionData.data.newLink;
+      const exist = prev.feed.find(({ id }) => id === newLink.id);
+      if (exist) return prev;
+
+      return Object.assign({}, prev, { feed: [newLink, ...prev.feed] });
+    },
+  });
   return (
     <div>
       {data &&
